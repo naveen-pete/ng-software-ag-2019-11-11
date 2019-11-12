@@ -1,1 +1,54 @@
-<h4>List of products</h4>
+<div>
+  Date: {{ today | date : 'longDate' | uppercase }}
+</div>
+
+<div class="row">
+  <div class="col">
+    <h4>Product Form</h4>
+
+    <div class="card bg-light">
+      <div class="card-body">
+        <form>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input class="form-control" type="text" id="name" name="name" placeholder="Enter name"
+              [(ngModel)]="product.name" />
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" rows="3" placeholder="Enter description" id="description" name="description"
+              [(ngModel)]="product.description"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="price">Price</label>
+            <input class="form-control" type="text" id="price" name="price" placeholder="Enter price"
+              [(ngModel)]="product.price" />
+          </div>
+
+          <div class="form-group form-check">
+            <input type="checkbox" id="isAvailable" name="isAvailable" class="form-check-input"
+              [(ngModel)]="product.isAvailable" value="true" />
+            <label for="isAvailable" class="form-check-label">Available?</label>
+          </div>
+
+          <button type="button" class="btn btn-primary" (click)="onSubmit()">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="alert alert-success mt-3" *ngIf="showMessage">
+      New product added successfully!
+    </div>
+  </div>
+
+  <div class="col">
+    <h4>List of products</h4>
+
+    <app-product-detail [product]="p" *ngFor="let p of products"></app-product-detail>
+  </div>
+</div>
+<!-- 
+<input [value]="productName" >
+<app-product-detail [product]="p"> -->
