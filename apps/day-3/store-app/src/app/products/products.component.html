@@ -1,0 +1,20 @@
+<div>
+  Date: {{ today | date : 'longDate' | uppercase }}
+</div>
+
+<div class="row">
+  <div class="col">
+    <app-product-form (productCreated)="onProductCreated($event)"></app-product-form>
+  </div>
+
+  <div class="col">
+    <h4>List of products</h4>
+
+    <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchText">
+    <br>
+
+    <app-product-detail (deleteProduct)="onProductDelete($event)" [product]="p"
+      *ngFor="let p of products | search : searchText">
+    </app-product-detail>
+  </div>
+</div>

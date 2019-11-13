@@ -1,0 +1,9 @@
+<!-- <app-user-detail [name]="users[0].name" [email]="users[0].email"></app-user-detail>
+<app-user-detail [name]="users[1].name" [email]="users[1].email"></app-user-detail>
+<hr>
+<app-user-detail1 [user]="users[0]"></app-user-detail1>
+<app-user-detail1 [user]="users[1]"></app-user-detail1> -->
+
+<app-user-detail [name]="u.name" [email]="u.email" *ngFor="let u of users"></app-user-detail>
+<hr>
+<app-user-detail1 [user]="u" *ngFor="let u of users"></app-user-detail1>
