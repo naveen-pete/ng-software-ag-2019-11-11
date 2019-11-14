@@ -27,11 +27,20 @@
         <label for="isAvailable" class="form-check-label">Available?</label>
       </div>
 
-      <button type="submit" class="btn btn-primary" (click)="onSubmit()">Submit</button>
+      <div *ngIf="!editMode; else elseBlock">
+        <button type="button" class="btn btn-primary" (click)="onAdd()">Add</button>
+      </div>
+      <ng-template #elseBlock>
+        <div>
+          <button type="button" class="btn btn-primary" (click)="onUpdate()">Update</button>
+        </div>
+      </ng-template>
     </form>
   </div>
 </div>
 
 <div class="alert alert-success mt-3" *ngIf="showMessage">
-  New product added successfully!
+  <span *ngIf="editMode">Product updated successfully.</span>
+  <span *ngIf="!editMode">New product added successfully.</span>
+  <!-- {{ editMode ? 'Product updated' : 'New product added' }} successfully! -->
 </div>

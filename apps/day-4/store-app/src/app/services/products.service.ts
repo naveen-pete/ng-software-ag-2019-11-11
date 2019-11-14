@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 
 import { ProductModel } from '../models/product-model';
 
@@ -7,6 +7,8 @@ import { ProductModel } from '../models/product-model';
 // })
 @Injectable()
 export class ProductsService {
+  editProductEvent = new EventEmitter<ProductModel>();
+
   products: ProductModel[] = [
     {
       id: 1,
@@ -32,14 +34,11 @@ export class ProductsService {
   ];
 
   getProducts(): ProductModel[] {
-    // make a request to the server
     return this.products;
   }
 
   addProduct(product: ProductModel) {
-    console.log('ProductsService.addProduct() invoked..', product);
     this.products.unshift(product);
-    console.log('products:', this.products);
   }
 
   deleteProduct(productId: number) {
@@ -50,5 +49,29 @@ export class ProductsService {
     if (index >= 0) {
       this.products.splice(index, 1);
     }
+  }
+
+  beginEdit(productId: number) {
+    const p = this.products.find(p => p.id === productId);
+    if (!p) {
+      console.log('Product not found!');
+      return;
+    }
+
+    const product: ProductModel = { ...p };
+    this.editProductEvent.emit(product);
+  }
+
+  updateProduct(product: ProductModel) {
+    const p = this.products.find(p => p.id === product.id);
+    if (!p) {
+      console.log('Product not found!');
+      return;
+    }
+
+    p.name = product.name;
+    p.description = product.description;
+    p.price = product.price;
+    p.isAvailable = product.isAvailable;
   }
 }

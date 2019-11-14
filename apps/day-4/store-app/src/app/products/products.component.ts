@@ -19,18 +19,4 @@ export class ProductsComponent implements OnInit {
   ngOnInit() {
     this.products = this.productsService.getProducts();
   }
-
-  onProductCreated(product: ProductModel) {
-    this.products.unshift(product);
-  }
-
-  onProductDelete(productId: number) {
-    const index = this.products.findIndex(p => {
-      return p.id === productId;
-    });
-
-    if (index >= 0) {
-      this.products.splice(index, 1);
-    }
-  }
 }

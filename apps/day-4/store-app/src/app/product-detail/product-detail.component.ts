@@ -11,13 +11,15 @@ import { ProductsService } from '../services/products.service';
 })
 export class ProductDetailComponent {
   @Input() product: ProductModel;
-  @Output() deleteProduct = new EventEmitter<number>();
 
   constructor(private logger: LoggerService, private productsService: ProductsService) { }
 
-  onDelete(productId) {
+  onDelete(productId: number) {
     this.logger.log('Product deleted.');
-    // this.deleteProduct.emit(productId);
     this.productsService.deleteProduct(productId);
+  }
+
+  onEdit(productId: number) {
+    this.productsService.beginEdit(productId);
   }
 }
