@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { getUser } from './cb';
+import { doWork } from './cb';
 
 @Component({
   selector: 'app-root',
@@ -11,14 +11,7 @@ export class AppComponent implements OnInit {
   title = 'async-app';
 
   ngOnInit() {
-    getUser('ram', (err, user) => {
-      if (err) {
-        console.log('Error:', err);
-        return;
-      }
-
-      console.log('user1:', user);
-    });
+    doWork();
   }
 
 }
