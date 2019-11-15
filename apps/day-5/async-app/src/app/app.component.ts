@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { doWork } from './cb';
+// import { doWork } from './promise';
+import { doWork } from './observable';
 
 @Component({
   selector: 'app-root',

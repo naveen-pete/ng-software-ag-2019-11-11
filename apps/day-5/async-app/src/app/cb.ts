@@ -1,6 +1,7 @@
 import { users, posts } from './data';
 
 const getUser = function (userName, cb) {
+  console.log('getUser() started.');
   setTimeout(function () {
     const user = users.find(function (u) {
       return u.name === userName;
@@ -16,6 +17,7 @@ const getUser = function (userName, cb) {
 };
 
 const getPosts = (userId, cb) => {
+  console.log('getPosts() started.');
   setTimeout(() => {
     const postsForUser = posts.filter((p) => {
       return p.userId === userId;
@@ -31,7 +33,6 @@ const getPosts = (userId, cb) => {
 };
 
 export function doWork() {
-
   console.log('begin');
 
   getUser('hari', (err, user) => {
@@ -41,8 +42,7 @@ export function doWork() {
     }
 
     console.log('user:', user);
-
-    getPosts(10, (err, posts) => {
+    getPosts(user.id, (err, posts) => {
       if (err) {
         console.log('getPosts() Error:', err);
         return;
@@ -53,5 +53,4 @@ export function doWork() {
   });
 
   console.log('end');
-
 }
