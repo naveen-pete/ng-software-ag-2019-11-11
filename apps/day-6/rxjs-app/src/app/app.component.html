@@ -1,31 +1,11 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <h1>RxJS App</h1>
+      <h3>RxJS App</h3>
+      <app-nav></app-nav>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col">
-      <div id="someDiv" class="divStyle">
-        <p>(fromEvent)</p>
-        <button id="someButton">Click me!</button>
-      </div>
-    </div>
-
-    <div class="col">
-      <div>
-        <h3>Search</h3>
-        <p>(debounceTime, distinctUntilChanged)</p>
-        <input id="search" type="text" placeholder="enter search text...">
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <app-search-posts></app-search-posts>
-    </div>
-  </div>
+  <router-outlet></router-outlet>
 
 </div>
