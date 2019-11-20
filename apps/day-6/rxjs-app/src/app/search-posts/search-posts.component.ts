@@ -1,5 +1,6 @@
 import { Component, ViewChild, OnDestroy, ElementRef, AfterViewInit } from '@angular/core';
-import { Subscription, fromEvent, Observable, from } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Subscription, fromEvent, Observable } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 
 @Component({
@@ -8,9 +9,13 @@ import { map, debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs
   styleUrls: ['./search-posts.component.css']
 })
 export class SearchPostsComponent implements AfterViewInit, OnDestroy {
+  apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+  posts: Post[] = [];
+
   @ViewChild('search', { static: false }) txtSearch: ElementRef;
   subscription: Subscription;
-  posts: Post[] = [];
+
+  constructor(private http: HttpClient) { }
 
   ngAfterViewInit() {
     this.subscription = this.initSearch().subscribe(
@@ -28,11 +33,8 @@ export class SearchPostsComponent implements AfterViewInit, OnDestroy {
     );
   }
 
-  searchPosts(searchTerm: string): Observable<Post[]> {
-    return from(
-      fetch(`https://jsonplaceholder.typicode.com/posts?q=${searchTerm}`)
-        .then(response => response.json())
-    );
+  searchPosts = (searchTerm: string): Observable<Post[]> => {
+    return this.http.get<Post[]>(`${this.apiUrl}?q=${searchTerm}`);
   }
 
   ngOnDestroy() {
