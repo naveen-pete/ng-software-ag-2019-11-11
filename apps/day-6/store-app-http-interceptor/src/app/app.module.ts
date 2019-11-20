@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AppNavComponent } from './app-nav/app-nav.component';
@@ -15,6 +15,7 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 import { ProductFormComponent } from './product-form/product-form.component';
 
 import { ProductsService } from './services/products.service';
+import { AuthInterceptor } from './interceptors/auth-interceptor';
 
 const appRoutes: Routes = [
   { path: 'products', component: ProductsComponent },
@@ -39,7 +40,10 @@ const appRoutes: Routes = [
     ProductDetailComponent
   ],
   imports: [BrowserModule, FormsModule, RouterModule.forRoot(appRoutes), HttpClientModule],
-  providers: [ProductsService],
+  providers: [
+    ProductsService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
