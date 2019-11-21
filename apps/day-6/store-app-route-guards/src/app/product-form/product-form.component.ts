@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { throwError } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { Product } from '../models/product';
+import { CanComponentDeactivate } from '../guards/can-deactivate.guard';
 import { ProductsService } from '../services/products.service';
+import { DialogService } from '../services/dialog.service';
 
 
 @Component({
@@ -13,7 +15,7 @@ import { ProductsService } from '../services/products.service';
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.css']
 })
-export class ProductFormComponent implements OnInit {
+export class ProductFormComponent implements OnInit, CanComponentDeactivate {
   id: number;
   product: Product;
   addNew: boolean;
@@ -22,7 +24,8 @@ export class ProductFormComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private service: ProductsService
+    private service: ProductsService,
+    private dialogService: DialogService
   ) {
     this.product = new Product();
     this.addNew = true;
@@ -60,7 +63,9 @@ export class ProductFormComponent implements OnInit {
 
     if (this.addNew) {
       this.service.addProduct(this.product).subscribe(
-        () => this.router.navigate(['/products']),
+        () => {
+          this.router.navigate(['/products'])
+        },
         error => {
           console.log('Add product failed.');
           console.log('Error:', error.message);
@@ -68,13 +73,31 @@ export class ProductFormComponent implements OnInit {
       );
     } else {
       this.service.updateProduct(this.id, this.product).subscribe(
-        () => this.router.navigate(['/products']),
+        () => {
+          this.router.navigate(['/products'])
+        },
         error => {
           console.log('Update product failed.');
           console.log('Error:', error.message);
         }
       );
     }
-
   }
+
+  canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
+    let { name, description, price, isAvailable } = this.productForm.value;
+    price = +price; // convert string to number
+
+    if (
+      this.product.name !== name ||
+      this.product.description !== description ||
+      this.product.price !== price ||
+      this.product.isAvailable !== isAvailable
+    ) {
+      return this.dialogService.confirm('Discard changes?');
+    }
+
+    return true;
+  }
+
 }

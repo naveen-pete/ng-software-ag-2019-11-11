@@ -1,7 +1,7 @@
 export class Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  isAvailable: boolean;
+  id: number = 0;
+  name: string = '';
+  description: string = '';
+  price: number = 0;
+  isAvailable: boolean = false;
 }
