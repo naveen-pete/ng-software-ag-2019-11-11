@@ -14,7 +14,6 @@ import { ProductsComponent } from './products/products.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { ProductFormComponent } from './product-form/product-form.component';
 
-import { ProductsService } from './services/products.service';
 import { AuthInterceptor } from './interceptors/auth-interceptor';
 
 import { AppRoutingModule } from "./app-routing.module";

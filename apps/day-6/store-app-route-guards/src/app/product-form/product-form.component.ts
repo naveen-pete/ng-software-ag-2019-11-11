@@ -1,14 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { throwError, Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { Product } from '../models/product';
 import { CanComponentDeactivate } from '../guards/can-deactivate.guard';
 import { ProductsService } from '../services/products.service';
 import { DialogService } from '../services/dialog.service';
-
 
 @Component({
   selector: 'app-product-form',
@@ -32,23 +30,13 @@ export class ProductFormComponent implements OnInit, CanComponentDeactivate {
   }
 
   ngOnInit() {
-    this.route.paramMap.pipe(
-      switchMap(map => {
-        if (!map.get('id')) {
-          return throwError(new Error('Product id missing. Entering Add mode.'));
+    this.route.data.subscribe(
+      ({ product }) => {
+        if (product) {
+          this.id = product.id;
+          this.product = product;
+          this.addNew = false;
         }
-
-        this.id = +map.get('id');
-        return this.service.getProduct(this.id);
-      })
-    ).subscribe(
-      product => {
-        this.product = product;
-        this.addNew = false;
-      },
-      error => {
-        console.log('Get product failed.');
-        console.log('Error:', error.message);
       }
     );
   }

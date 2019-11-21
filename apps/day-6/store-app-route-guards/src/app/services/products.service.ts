@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 import { Product } from '../models/product';
 
@@ -15,7 +15,6 @@ export class ProductsService {
 
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.apiUrl).pipe(
-      retry(3),
       catchError(this.handleError('getProducts()'))
     );
   }

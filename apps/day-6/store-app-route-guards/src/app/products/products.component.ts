@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '../models/product';
 import { ProductsService } from '../services/products.service';
 import { AuthService } from '../services/auth.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -14,6 +15,7 @@ export class ProductsComponent implements OnInit {
   isAuthenticated: boolean = false;
 
   constructor(
+    private route: ActivatedRoute,
     private service: ProductsService,
     private authService: AuthService
   ) { }
@@ -21,12 +23,8 @@ export class ProductsComponent implements OnInit {
   ngOnInit() {
     this.isAuthenticated = this.authService.isLoggedIn;
 
-    this.service.getProducts().subscribe(
-      products => this.products = products,
-      error => {
-        console.log('Get products failed.');
-        console.log('Error:', error.message);
-      }
+    this.route.data.subscribe(
+      ({ products }) => this.products = products
     );
   }
 

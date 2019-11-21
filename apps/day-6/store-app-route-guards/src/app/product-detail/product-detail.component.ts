@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { throwError } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 
 import { Product } from '../models/product';
 import { ProductsService } from '../services/products.service';
-
-
 
 @Component({
   selector: 'app-product-detail',
@@ -24,20 +20,10 @@ export class ProductDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.paramMap.pipe(
-      switchMap(map => {
-        if (!map.get('id')) {
-          return throwError(new Error('Product id missing.'));
-        }
-
-        this.id = +map.get('id');
-        return this.service.getProduct(this.id);
-      })
-    ).subscribe(
-      product => this.product = product,
-      error => {
-        console.log('Get product failed.');
-        console.log('Error:', error.message);
+    this.route.data.subscribe(
+      ({ product }) => {
+        this.id = product.id;
+        this.product = product;
       }
     );
   }
